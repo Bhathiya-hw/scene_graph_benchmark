@@ -43,8 +43,8 @@ def run(args):
     file_ops.tsv_writer(values=train_tsv,tsv_file=train_tsv_path)
     file_ops.tsv_writer(values=train_label_tsv,tsv_file=train_label_path)
     file_ops.generate_hw_file(train_tsv_path)
-    file_ops.generate_labelmap_file(train_label_path)
-    file_ops.generate_linelist_file(train_label_path)
+    file_ops.generate_labelmap_file(train_label_path, os.path.join(tsv_split_path,'train.labelmap.tsv'))
+    file_ops.generate_linelist_file(train_label_path, os.path.join(tsv_split_path,'train.linelist.tsv'))
 
 
 if __name__ == "__main__":
