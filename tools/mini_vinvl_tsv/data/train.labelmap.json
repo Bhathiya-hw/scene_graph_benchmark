@@ -1,0 +1,10 @@
+{
+    "label_to_idx": {
+        "Dog": 1,
+        "Cat": 2
+    },
+    "idx_to_label": {
+        "1": "Dog",
+        "2": "Cat"
+    }
+}
