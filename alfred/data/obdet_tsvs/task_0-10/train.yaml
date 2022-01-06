@@ -1,0 +1,5 @@
+hw: train.hw.tsv
+img: train.tsv
+label: train.label.tsv
+labelmap: train.labelmap.json
+linelist: train.linelist.tsv

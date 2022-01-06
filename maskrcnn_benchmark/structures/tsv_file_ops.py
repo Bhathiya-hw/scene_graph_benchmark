@@ -96,12 +96,14 @@ def generate_labelmap_file(label_file, save_file=None):
     rows = tsv_reader(label_file)
     labelmap = []
     for i, row in enumerate(rows):
-        labelmap.extend(set([rect['class'] for rect in json.loads(row[1])]))
+        labelmap.extend(set([rect['class'] for rect in json.loads(row[1])['objects']]))
     labelmap = sorted(list(set(labelmap)))
 
-    save_file = config_save_file(label_file, save_file, '.labelmap.tsv')
+    save_file = config_save_file(label_file, save_file, '.labelmap.json')
+
     with open(save_file, 'w') as f:
-        f.write('\n'.join(labelmap))
+        json.dump(labelmap, f)
+    #     f.write('\n'.join(labelmap))
 
 
 def extract_column(tsv_file, col=1, save_file=None):

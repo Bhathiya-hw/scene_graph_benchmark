@@ -4,6 +4,7 @@ import argparse
 import base64
 import csv
 import maskrcnn_benchmark.structures.tsv_file_ops as file_ops
+from maskrcnn_benchmark.utils.miscellaneous import write_to_yaml_file
 import cv2
 from tqdm import tqdm
 
@@ -34,17 +35,28 @@ def run(args):
             train_labelmap_tsv.add(instance['category'])
 
         train_tsv.append([str(image['image_path']), img_encoded_str.decode('utf-8')])
-        row_label = [image['image_path'], json.dumps(img_objs)]
+        row_label = [image['image_path'], json.dumps({"objects":img_objs})]
         train_label_tsv.append(row_label)
-
+    #@TODO replace 'train' with user input
     tsv_split_path = os.path.join(out_dir,split)
     if not os.path.exists(tsv_split_path):
         os.makedirs(tsv_split_path)
     file_ops.tsv_writer(values=train_tsv,tsv_file=train_tsv_path)
     file_ops.tsv_writer(values=train_label_tsv,tsv_file=train_label_path)
     file_ops.generate_hw_file(train_tsv_path)
-    file_ops.generate_labelmap_file(train_label_path, os.path.join(tsv_split_path,'train.labelmap.tsv'))
+    file_ops.generate_labelmap_file(train_label_path, os.path.join(tsv_split_path,'train.labelmap.json'))
     file_ops.generate_linelist_file(train_label_path, os.path.join(tsv_split_path,'train.linelist.tsv'))
+
+    yaml_path =  os.path.join(tsv_split_path,'train.yaml')
+    yaml_dict = dict()
+    yaml_dict['img'] = 'train.tsv'
+    yaml_dict['label'] = 'train.label.tsv'
+    yaml_dict['hw'] = 'train.hw.tsv'
+    yaml_dict['labelmap'] = 'train.labelmap.json'
+    yaml_dict['linelist'] = 'train.linelist.tsv'
+
+    write_to_yaml_file(yaml_dict, yaml_path)
+
 
 
 if __name__ == "__main__":
